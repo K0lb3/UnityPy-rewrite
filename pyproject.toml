@@ -1,0 +1,100 @@
+[build-system]
+requires = ["poetry-core>=1.5.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "UnityPy"
+version = "2.0.0.dev0"
+description = "Unity asset extraction and patching"
+authors = ["Rudolf Kolbe <rkolbe96@gmail.com>"]
+maintainers = []
+license = "MIT"
+readme = "README.md"
+# include = [{ path = "tests", format = "sdist" }]
+# homepage = "https://python-poetry.org/"
+# repository = "https://github.com/python-poetry/poetry"
+# documentation = "https://python-poetry.org/docs"
+keywords = ["packaging", "dependency", "poetry"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+
+[tool.poetry.urls]
+"Homepage" = "https://github.com/K0lb3/UnityPy"
+"Bug Tracker" = "https://github.com/K0lb3/UnityPy/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+poetry-core = "1.9.0"
+poetry-plugin-export = "^1.6.0"
+# block compression/decompression
+lz4 = ">=4.3.3"    # BundleFile block compression
+brotli = ">=1.1.0" # WebFile compression
+# Texture & Sprite handling
+Pillow = ">=10.3.0"
+texture2ddecoder = ">=1.0.4" # texture decompression
+# etcpak = ""           # ETC & DXT compression
+# audio extraction
+pyfmodex = "^0.7.1"
+# filesystem handling
+fsspec = "^2024.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = ">=2.10"
+
+[tool.poetry.group.test.dependencies]
+coverage = ">=7.2.0"
+deepdiff = "^6.3"
+pytest = "^7.1"
+pytest-cov = "^4.0"
+
+[tool.poetry.group.typing.dependencies]
+pyright = ">=1.1.351"
+
+# only used in github actions
+[tool.poetry.group.github-actions]
+optional = true
+
+[tool.poetry.group.github-actions.dependencies]
+pytest-github-actions-annotate-failures = "^0.1.7"
+
+# [tool.poetry.scripts]
+# poetry = "poetry.console.application:main"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+lines-between-types = 1
+lines-after-imports = 2
+known-first-party = ["poetry"]
+known-third-party = ["poetry.core"]
+required-imports = ["from __future__ import annotations"]
+
+[tool.black]
+target-version = ['py38']
+preview = true
+extend-exclude = "tests/([^/]*/)*fixtures/"
+
+[tool.pyright]
+enable = true
+typeCheckingMode = "strict"
+reportMissingTypeStubs = false
+
+
+[tool.pytest.ini_options]
+addopts = "-n auto"
+testpaths = ["tests"]
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:"]
